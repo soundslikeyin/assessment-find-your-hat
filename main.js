@@ -1,4 +1,4 @@
-const prompt = require('prompt-sync')({sigint: true});
+const prompt = require('prompt-sync')({ sigint: true });
 
 const hat = '^';
 const hole = 'O';
@@ -6,7 +6,7 @@ const fieldCharacter = '░';
 const pathCharacter = '*';
 
 class Field {
-    constructor( field = []) {
+    constructor(field = []) {
         // each Field is a 2-d array with the name field for easy access
         this.field = field;
         this.locationX = 0; // initialise location of Character
@@ -18,42 +18,48 @@ class Field {
 const generateField = (height, width) => {
     let newField = [[]];
 
-    for ( i = 0; i < height; i++) {
-        for ( j = 0; j < width; j++) {
+    for (i = 0; i < height; i++) {
+        for (j = 0; j < width; j++) {
             newField[i][j] = fieldCharacter;
         }
     }
 
+    let numberHoles = 10;
 
-    numberHoles = 10;
+    for (i = 0; i < numberHoles) {
+        let holePositionX = Math.floor(Math.random() * height);
+        let holePositionY = Math.floor(Math.random() * width);
 
-    for (i = 0; i <numberHoles) {
-    newField[Math.floor(Math.random() * height][Math.floor(Math.random() * width]= hole;
-}
-    newField[Math.floor(Math.random() * height][Math.floor(Math.random() * width]= hat;
+        newField[holePositionX][holePositionY] = hole;
+    }
+
+    let hatPositionX = Math.floor(Math.random() * height);
+    let hatPositionY = Math.floor(Math.random() * width);
+
+    newField[hatPositionX][hatPositionY] = hat;
 
     return newField
 
 }
 
 
-const myField = new Field(generateField(5,5));
+const myField = new Field(generateField(5, 5));
 
 const didUserWin = () => {
 
     switch (myField[myField.locationX][myField.locationY]) {
-        case '^' :
+        case '^':
             myField.field[myField.locationX][myField.locationY] = pathCharacter;
             console.log("Congrats, you found the hat!");
             return true;
-        case 'O' :
+        case 'O':
             console.log("Game over. You fell into a hole");
             return true;
-        case '░' :
+        case '░':
             myField.field[myField.locationX][myField.locationY] = pathCharacter;
             console.log("You haven't found the hat, please continue playing.");
             return false;
-        case '*' :
+        case '*':
             myField.field[myField.locationX][myField.locationY] = pathCharacter;
             console.log("You haven't found the hat, please continue playing.");
             return false;
@@ -66,27 +72,27 @@ const getDirection = () => {
 
 
     switch (userDirection) {
-        case 'L' :
-            if (myField.locationX >0) {
-                myField.locationX = myField.locationX - 1;  
-            }  else {
-                console.log("Sorry, you cannot move that way. There's a wall there.");
-            }
-            break;
-        case 'R' :
-            myField.locationX = myField.locationX - 1;  
-            break;
-        case 'U' :
-            if (myField.locationY >0) {
-                myField.locationY = myField.locationY - 1;  
+        case 'L':
+            if (myField.locationX > 0) {
+                myField.locationX = myField.locationX - 1;
             } else {
                 console.log("Sorry, you cannot move that way. There's a wall there.");
             }
             break;
-        case 'D' :
-            myField.locationY = myField.locationY - 1;  
+        case 'R':
+            myField.locationX = myField.locationX - 1;
             break;
-        default :
+        case 'U':
+            if (myField.locationY > 0) {
+                myField.locationY = myField.locationY - 1;
+            } else {
+                console.log("Sorry, you cannot move that way. There's a wall there.");
+            }
+            break;
+        case 'D':
+            myField.locationY = myField.locationY - 1;
+            break;
+        default:
             console.log('Your entry is invalid. Please enter again.');
             getDirection();
             break;
@@ -96,7 +102,7 @@ const getDirection = () => {
 
 
 const printField = (field) => {
-    for (i = 0; i< field.length; i++) {
+    for (i = 0; i < field.length; i++) {
         console.log(field[i].join() + "\n");
     }
 }
@@ -108,4 +114,4 @@ while (didUserWin === false) {
     getDirection();
 }
 
- 
+
