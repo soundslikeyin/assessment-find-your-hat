@@ -20,7 +20,7 @@ const generateField = (height, width) => {
 
     for ( i = 0; i < height; i++) {
         for ( j = 0; j < width; j++) {
-            map[i][j] = fieldCharacter;
+            newField[i][j] = fieldCharacter;
         }
     }
 
@@ -30,7 +30,10 @@ const generateField = (height, width) => {
     for (i = 0; i <numberHoles) {
     newField[Math.floor(Math.random() * height][Math.floor(Math.random() * width]= hole;
 }
+    newField[Math.floor(Math.random() * height][Math.floor(Math.random() * width]= hat;
+
     return newField
+
 }
 
 
