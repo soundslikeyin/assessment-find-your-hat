@@ -4,72 +4,86 @@ const hat = '^';
 const hole = 'O';
 const fieldCharacter = '░';
 const pathCharacter = '*';
+let gameOver = false;
 
 class Field {
     constructor(field = []) {
-        // each Field is a 2-d array with the name field for easy access
-        this.field = field;
+        this.field = field ;
         this.locationX = 0; // initialise location of Character
         this.locationY = 0; // initialise location of Character
         this.field[0][0] = pathCharacter; // this method indicates the location of Character
     }
 }
 
-const generateField = (height, width) => {
-    let newField = [[]];
+const generateField = (row, column) => {
+    
+    let newMap = new Array();
+    for (i = 0; i < row; i++){
+        newMap[i] = new Array();
+        for (j = 0; j < column; j++)
+        newMap[i][j] = '░';
+    }
 
-    for (i = 0; i < height; i++) {
-        for (j = 0; j < width; j++) {
-            newField[i][j] = fieldCharacter;
+    let numberHoles = Math.floor(0.1 * (row*column));
+
+    for (i = 0; i < numberHoles; i++) {
+
+        let holePositionX = 0;
+        let holePositionY = 0;
+
+        while (holePositionX == 0 && holePositionY == 0) {
+            holePositionX = Math.floor(Math.random() * column);
+            holePositionY = Math.floor(Math.random() * row);
         }
+
+        newMap[holePositionY][holePositionX] = 'O';
     }
 
-    let numberHoles = 10;
+    let hatPositionX = 0;
+    let hatPositionY = 0;
 
-    for (i = 0; i < numberHoles) {
-        let holePositionX = Math.floor(Math.random() * height);
-        let holePositionY = Math.floor(Math.random() * width);
-
-        newField[holePositionX][holePositionY] = hole;
+    while (hatPositionX == 0 && hatPositionY == 0 && newMap[hatPositionY][hatPositionX]!='O' ) {
+        hatPositionX = Math.floor(Math.random() * column);
+        hatPositionY = Math.floor(Math.random() * row);
     }
 
-    let hatPositionX = Math.floor(Math.random() * height);
-    let hatPositionY = Math.floor(Math.random() * width);
+    newMap[hatPositionY][hatPositionX] = '^';
 
-    newField[hatPositionX][hatPositionY] = hat;
-
-    return newField
-
+    return newMap;
 }
 
+const printField = (Field) => {
+    for (i = 0; i < Field.field.length; i++) {
+        console.log(Field.field[i].join(''));
+    }
+}
 
-const myField = new Field(generateField(5, 5));
+const myField = new Field(generateField(12, 9));
 
 const didUserWin = () => {
-
-    switch (myField[myField.locationX][myField.locationY]) {
+    switch (myField.field[myField.locationY][myField.locationX]) {
         case '^':
-            myField.field[myField.locationX][myField.locationY] = pathCharacter;
+            myField.field[myField.locationY][myField.locationX] = pathCharacter;
             console.log("Congrats, you found the hat!");
-            return true;
+            gameOver = true;
+            break;
         case 'O':
             console.log("Game over. You fell into a hole");
-            return true;
+            gameOver = true;
+            break;
         case '░':
-            myField.field[myField.locationX][myField.locationY] = pathCharacter;
+            myField.field[myField.locationY][myField.locationX] = pathCharacter;
             console.log("You haven't found the hat, please continue playing.");
-            return false;
+            break;
         case '*':
-            myField.field[myField.locationX][myField.locationY] = pathCharacter;
+            myField.field[myField.locationY][myField.locationX] = pathCharacter;
             console.log("You haven't found the hat, please continue playing.");
-            return false;
+            break;
     }
-
 }
 
 const getDirection = () => {
     const userDirection = prompt('Which direction do you want to move? (L,R,U,D):');
-
 
     switch (userDirection) {
         case 'L':
@@ -80,7 +94,7 @@ const getDirection = () => {
             }
             break;
         case 'R':
-            myField.locationX = myField.locationX - 1;
+            myField.locationX = myField.locationX + 1;
             break;
         case 'U':
             if (myField.locationY > 0) {
@@ -90,7 +104,7 @@ const getDirection = () => {
             }
             break;
         case 'D':
-            myField.locationY = myField.locationY - 1;
+            myField.locationY = myField.locationY + 1;
             break;
         default:
             console.log('Your entry is invalid. Please enter again.');
@@ -100,18 +114,10 @@ const getDirection = () => {
 
 }
 
-
-const printField = (field) => {
-    for (i = 0; i < field.length; i++) {
-        console.log(field[i].join() + "\n");
-    }
-}
-
-
-
-while (didUserWin === false) {
+while (gameOver === false) {
     printField(myField);
     getDirection();
+    didUserWin();
 }
 
 
