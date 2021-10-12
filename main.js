@@ -24,12 +24,17 @@ const generateField = (height, width) => {
         }
     }
 
-    newField[Math.floor(Math.random() * height][Math.floor(Math.random() * width]= 'O';
 
+    numberHoles = 10;
+
+    for (i = 0; i <numberHoles) {
+    newField[Math.floor(Math.random() * height][Math.floor(Math.random() * width]= hole;
+}
+    return newField
 }
 
 
-const myField = new Field(map);
+const myField = new Field(generateField(5,5));
 
 const didUserWin = () => {
 
@@ -85,8 +90,6 @@ const getDirection = () => {
     }
 
 }
-
-
 
 
 const printField = (field) => {
