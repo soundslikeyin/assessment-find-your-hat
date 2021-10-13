@@ -21,7 +21,7 @@ const generateField = (row, column) => {
     for (i = 0; i < row; i++){
         newMap[i] = new Array();
         for (j = 0; j < column; j++)
-        newMap[i][j] = '░';
+        newMap[i][j] = fieldCharacter;
     }
     return newMap;
 }
@@ -42,7 +42,7 @@ const generateSolution = (newMap) => {
             holePositionY = Math.floor(Math.random() * row);
         }
 
-        newMap[holePositionY][holePositionX] = 'O';
+        newMap[holePositionY][holePositionX] = hole;
     }
 
     let hatPositionX = 0;
@@ -53,7 +53,7 @@ const generateSolution = (newMap) => {
         hatPositionY = Math.floor(Math.random() * row);
     }
 
-    newMap[hatPositionY][hatPositionX] = '^';
+    newMap[hatPositionY][hatPositionX] = hat;
 
     return newMap;
 }
@@ -70,22 +70,22 @@ const myField = new Field(generateField(10, 5));
 
 const didUserWin = () => {
     switch (solutionField.field[solutionField.locationY][solutionField.locationX]) {
-        case '^':
+        case hat:
             myField.field[myField.locationY][myField.locationX] = pathCharacter;
             solutionField.field[solutionField.locationY][solutionField.locationX] = pathCharacter;
             console.log("Congrats, you found the hat!");
             gameOver = true;
             break;
-        case 'O':
+        case hole:
             console.log("Game over. You fell into a hole");
             gameOver = true;
             break;
-        case '░':
+        case fieldCharacter:
             myField.field[myField.locationY][myField.locationX] = pathCharacter;
             solutionField.field[solutionField.locationY][solutionField.locationX] = pathCharacter;
             console.log("You haven't found the hat, please continue playing.");
             break;
-        case '*':
+        case pathCharacter:
             // myField.field[myField.locationY][myField.locationX] = pathCharacter;
             // solutionField.field[solutionField.locationY][solutionField.locationX] = pathCharacter;
             console.log("You haven't found the hat, please continue playing.");
